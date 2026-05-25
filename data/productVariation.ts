@@ -6,6 +6,6 @@ export const defaultVariation: ProductVariation = {
 };
 
 export const outOfStockVariation: ProductVariation = {
-  size: 'MM',
+  size: 'M',
   color: 'Red',
 };

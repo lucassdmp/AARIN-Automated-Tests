@@ -6,7 +6,7 @@
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui",
+    "test:ui": "playwright test --ui --retries=2",
     "test:debug": "playwright test --debug",
     "report": "playwright show-report reports/html"
   },

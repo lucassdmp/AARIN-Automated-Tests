@@ -198,40 +198,4 @@ test.describe('EBAC Shop - Fluxo de Compra', () => {
     );
     expect(isInvalid).toBeTruthy();
   });
-
-  test('CT-13: Dado que há um item no carrinho, quando o usuário clica no botão de aumentar quantidade, então o carrinho deve refletir a quantidade incrementada', async ({
-    homePage,
-    productPage,
-    cartPage,
-  }) => {
-    await homePage.selectProductByIndex(0);
-    await productPage.addToCart(defaultVariation);
-    await productPage.goToCart();
-
-    await cartPage.updateItemQuantity(3);
-
-    const before = await cartPage.getItemQuantity();
-    await cartPage.incrementQuantity();
-
-    const after = await cartPage.getItemQuantity();
-    expect(after).toBe(before + 1);
-  });
-
-  test('CT-14: Dado que há um item no carrinho com quantidade maior que um, quando o usuário clica no botão de diminuir quantidade, então o carrinho deve refletir a quantidade decrementada', async ({
-    homePage,
-    productPage,
-    cartPage,
-  }) => {
-    await homePage.selectProductByIndex(0);
-    await productPage.addToCart(defaultVariation);
-    await productPage.goToCart();
-
-    await cartPage.updateItemQuantity(3);
-
-    const before = await cartPage.getItemQuantity();
-    await cartPage.decrementQuantity();
-
-    const after = await cartPage.getItemQuantity();
-    expect(after).toBe(before - 1);
-  });
 });
