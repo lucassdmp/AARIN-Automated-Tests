@@ -5,7 +5,7 @@ export const ENV = {
 };
 
 export const RUNNER = {
-  workers: process.env.WORKERS ? parseInt(process.env.WORKERS, 10) : 3,
+  workers: process.env.WORKERS ? parseInt(process.env.WORKERS, 10) : 5,
   fullyParallel: process.env.FULLY_PARALLEL !== 'false',
-  retries: process.env.CI ? 2 : 1,
+  retries: process.env.CI ? 3 : 2,
 };

@@ -64,3 +64,4 @@ As principais opções de execução ficam em `configs/environments.ts` e podem 
 $env:WORKERS=4; npm test
 $env:FULLY_PARALLEL=false; npm test
 ```
+

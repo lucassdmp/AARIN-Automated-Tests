@@ -14,6 +14,7 @@ export class ProductPage extends BasePage {
   readonly viewCartLink: Locator;
   readonly successNotice: Locator;
   readonly variationsForm: Locator;
+  readonly stockAvailability: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -24,6 +25,7 @@ export class ProductPage extends BasePage {
     this.viewCartLink = page.locator('.woocommerce-message a.wc-forward');
     this.successNotice = page.locator('.woocommerce-message');
     this.variationsForm = page.locator('.variations_form');
+    this.stockAvailability = page.locator('.woocommerce-variation-availability p.stock');
   }
 
   async isVariableProduct(): Promise<boolean> {
@@ -54,13 +56,16 @@ export class ProductPage extends BasePage {
     await this.selectVariations(variations);
     
     await this.page.waitForFunction(
-      () => !(document.querySelector('.single_add_to_cart_button') as HTMLButtonElement)?.disabled
+      () => !document.querySelector('.single_add_to_cart_button')?.classList.contains('disabled')
     );
     await this.addToCartButton.click();
     await this.successNotice.waitFor({ state: 'visible' });
   }
 
   async goToCart() {
-    await this.viewCartLink.click();
+    await Promise.all([
+      this.page.waitForLoadState('load'),
+      this.viewCartLink.click(),
+    ]);
   }
 }

@@ -3,12 +3,14 @@ import { HomePage } from '../pages/HomePage';
 import { ProductPage } from '../pages/ProductPage';
 import { CartPage } from '../pages/CartPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
+import { LoginPage } from '../pages/LoginPage';
 
 type Pages = {
   homePage: HomePage;
   productPage: ProductPage;
   cartPage: CartPage;
   checkoutPage: CheckoutPage;
+  loginPage: LoginPage;
 };
 
 export const test = base.extend<Pages>({
@@ -16,6 +18,7 @@ export const test = base.extend<Pages>({
   productPage: async ({ page }, use) => use(new ProductPage(page)),
   cartPage: async ({ page }, use) => use(new CartPage(page)),
   checkoutPage: async ({ page }, use) => use(new CheckoutPage(page)),
+  loginPage: async ({ page }, use) => use(new LoginPage(page)),
 });
 
 export { expect } from '@playwright/test';
