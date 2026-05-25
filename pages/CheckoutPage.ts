@@ -36,6 +36,7 @@ export class CheckoutPage extends BasePage {
   readonly orderSuccessNotice: Locator;
   readonly orderNumber: Locator;
   readonly orderPaymentMethod: Locator;
+  readonly checkoutError: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -55,6 +56,7 @@ export class CheckoutPage extends BasePage {
     this.orderSuccessNotice = page.locator('.woocommerce-notice--success');
     this.orderNumber = page.locator('.woocommerce-order-overview__order strong');
     this.orderPaymentMethod = page.locator('.woocommerce-order-overview__payment-method strong');
+    this.checkoutError = page.locator('.woocommerce-error');
   }
 
   async fillBillingDetails(details: BillingDetails) {

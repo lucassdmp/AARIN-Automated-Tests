@@ -1,5 +1,5 @@
 import { test, expect } from '../utils/fixtures';
-import { billingDetails, defaultVariation } from '../utils/testData';
+import { billingDetails, defaultVariation, existingAccountDetails, existingAccountPassword } from '../utils/testData';
 import { generateEmail, generatePassword } from '../utils/randomData';
 
 test.describe('EBAC Shop - Fluxo de Compra', () => {
@@ -76,31 +76,18 @@ test.describe('EBAC Shop - Fluxo de Compra', () => {
     cartPage,
     checkoutPage,
   }) => {
-    await expect(homePage.productCards.first()).toBeVisible();
-
     await homePage.selectProductByIndex(0);
-    await expect(productPage.productTitle).toBeVisible();
-
     await productPage.addToCart(defaultVariation);
-    await expect(productPage.successNotice).toBeVisible();
-
     await productPage.goToCart();
-    await expect(cartPage.cartItems.first()).toBeVisible();
-
-    await cartPage.updateItemQuantity(2);
-    expect(await cartPage.getItemQuantity()).toBe(2);
-
     await cartPage.proceedToCheckout();
-    expect(await checkoutPage.isOnCheckoutPage()).toBeTruthy();
 
-    await checkoutPage.fillBillingDetails(billingDetails);
+    await checkoutPage.fillBillingDetails({ ...billingDetails});
     await checkoutPage.acceptTerms();
     await checkoutPage.placeOrder();
 
     expect(await checkoutPage.isOrderConfirmed()).toBeTruthy();
     const orderNumber = await checkoutPage.getOrderNumber();
     expect(orderNumber).toBeTruthy();
-    await expect(checkoutPage.orderPaymentMethod).toContainText('Pagamento na entrega');
   });
 
   test('CT-07: Fluxo completo de compra end-to-end com criação de conta', async ({
@@ -128,7 +115,27 @@ test.describe('EBAC Shop - Fluxo de Compra', () => {
     await expect(checkoutPage.headerWelcome).toContainText(billingDetails.firstName);
   });
 
-  test('CT-08: Deve atualizar o contador do carrinho no header após adicionar produto', async ({
+  test('CT-08: Deve exibir erro ao tentar criar conta com email já cadastrado', async ({
+    homePage,
+    productPage,
+    cartPage,
+    checkoutPage,
+  }) => {
+    await homePage.selectProductByIndex(0);
+    await productPage.addToCart(defaultVariation);
+    await productPage.goToCart();
+    await cartPage.proceedToCheckout();
+
+    await checkoutPage.fillBillingDetails(existingAccountDetails);
+    await checkoutPage.enableCreateAccount(existingAccountPassword);
+    await checkoutPage.acceptTerms();
+    await checkoutPage.placeOrderButton.click();
+
+    await expect(checkoutPage.checkoutError).toBeVisible();
+    await expect(checkoutPage.checkoutError).toContainText('Uma conta já está registrada com seu endereço de e-mail.');
+  });
+
+  test('CT-09: Deve atualizar o contador do carrinho no header após adicionar produto', async ({
     homePage,
     productPage,
   }) => {

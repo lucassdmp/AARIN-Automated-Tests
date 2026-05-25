@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { waitForNetworkIdle, waitForUrl } from '../utils/waitHelpers';
+import { waitForWooAjax } from '../utils/waitHelpers';
 
 export class CartPage extends BasePage {
   readonly cartItems: Locator;
@@ -24,16 +24,18 @@ export class CartPage extends BasePage {
 
   async updateItemQuantity(qty: number, itemIndex = 0) {
     const input = this.quantityInput.nth(itemIndex);
+    const ajaxDone = waitForWooAjax(this.page);
     await input.fill(String(qty));
     await input.dispatchEvent('change');
-    await waitForNetworkIdle(this.page);
+    await ajaxDone;
   }
 
   async updateItemQuantityByName(productName: string, qty: number) {
     const input = this.cartItems.filter({ hasText: productName }).locator('input[type="number"].qty');
+    const ajaxDone = waitForWooAjax(this.page);
     await input.fill(String(qty));
     await input.dispatchEvent('change');
-    await waitForNetworkIdle(this.page);
+    await ajaxDone;
   }
 
   async getItemQuantity(itemIndex = 0): Promise<number> {
@@ -42,8 +44,7 @@ export class CartPage extends BasePage {
   }
 
   async proceedToCheckout() {
-    const navigation = waitForUrl(this.page, /checkout/);
     await this.proceedToCheckoutButton.click();
-    await navigation;
+    await this.page.waitForLoadState('load');
   }
 }
