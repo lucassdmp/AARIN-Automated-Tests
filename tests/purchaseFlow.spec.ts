@@ -1,7 +1,7 @@
 import { test, expect } from '../utils/fixtures';
-import { billingDetails } from '../fixtures/billingDetails';
-import { existingAccountDetails, existingAccountPassword } from '../fixtures/existingAccount';
-import { defaultVariation, outOfStockVariation } from '../fixtures/productVariation';
+import { billingDetails } from '../data/billingDetails';
+import { existingAccountDetails, existingAccountPassword } from '../data/existingAccount';
+import { defaultVariation, outOfStockVariation } from '../data/productVariation';
 import { generateEmail, generatePassword } from '../utils/randomData';
 
 test.describe('EBAC Shop - Fluxo de Compra', () => {

@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import { config } from 'dotenv';
 import { ENV, RUNNER } from './configs/environments';
+
+config();
 
 export default defineConfig({
   testDir: './tests',

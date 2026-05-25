@@ -1,23 +1,8 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { BillingDetails, PaymentMethod } from '../types/checkout';
 
-export enum PaymentMethod {
-  BankTransfer = 'bacs',
-  Cheque = 'cheque',
-  CashOnDelivery = 'cod',
-}
-
-export interface BillingDetails {
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  state: string;
-  postcode: string;
-  phone: string;
-  email: string;
-  paymentMethod?: PaymentMethod;
-}
+export type { BillingDetails, PaymentMethod };
 
 export class CheckoutPage extends BasePage {
   readonly firstNameInput: Locator;

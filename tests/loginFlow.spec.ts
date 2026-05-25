@@ -1,5 +1,5 @@
 import { test, expect } from '../utils/fixtures';
-import { existingAccountDetails, existingAccountPassword } from '../fixtures/existingAccount';
+import { existingAccountDetails, existingAccountPassword } from '../data/existingAccount';
 import { generateEmail, generatePassword } from '../utils/randomData';
 
 test.describe('EBAC Shop - Fluxo de Login e Registro', () => {
@@ -41,5 +41,35 @@ test.describe('EBAC Shop - Fluxo de Login e Registro', () => {
 
     await expect(loginPage.formError).toBeVisible();
     await expect(loginPage.formError).toContainText('Erro: Uma conta já está registrada com seu endereço de e-mail. Faça login.');
+  });
+
+  test('CT-06: Dado que o formulário de login está vazio, quando o usuário tenta fazer login, então deve ver erro de nome de usuário obrigatório', async ({ loginPage }) => {
+    await loginPage.login('', '');
+
+    await expect(loginPage.formError).toBeVisible();
+    await expect(loginPage.formError).toContainText('Nome de usuário é obrigatório.');
+  });
+
+  test('CT-07: Dado que o usuário informou apenas o nome de usuário, quando tenta fazer login sem senha, então deve ver erro de senha vazia', async ({ loginPage }) => {
+    await loginPage.login(existingAccountDetails.email, '');
+
+    await expect(loginPage.formError).toBeVisible();
+    await expect(loginPage.formError).toContainText('O campo da senha está vazio.');
+  });
+
+  test('CT-08: Dado que o usuário informou apenas o e-mail no registro, quando tenta criar conta sem senha, então deve ver erro de senha obrigatória', async ({ loginPage }) => {
+    const email = generateEmail();
+
+    await loginPage.register(email, '');
+
+    await expect(loginPage.formError).toBeVisible();
+    await expect(loginPage.formError).toContainText('Digite a senha da conta.');
+  });
+
+  test('CT-09: Dado que o formulário de registro está vazio, quando o usuário tenta criar conta, então deve ver erro de e-mail obrigatório', async ({ loginPage }) => {
+    await loginPage.register('', '');
+
+    await expect(loginPage.formError).toBeVisible();
+    await expect(loginPage.formError).toContainText('Informe um endereço de e-mail válido.');
   });
 });

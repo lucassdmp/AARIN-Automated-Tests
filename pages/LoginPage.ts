@@ -43,7 +43,7 @@ export class LoginPage extends BasePage {
     await this.registerPasswordInput.fill(password);
     await Promise.all([
       this.page.waitForLoadState('load'),
-      this.registerButton.click({ force: true }),
+      this.registerButton.click(),
     ]);
   }
 
